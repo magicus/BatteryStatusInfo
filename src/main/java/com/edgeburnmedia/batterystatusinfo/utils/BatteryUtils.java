@@ -2,7 +2,7 @@ package com.edgeburnmedia.batterystatusinfo.utils;
 
 import com.edgeburnmedia.batterystatusinfo.BatteryStatus;
 import com.edgeburnmedia.batterystatusinfo.client.BatteryStatusInfoModClient;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import oshi.SystemInfo;
 import oshi.hardware.PowerSource;
 
@@ -56,11 +56,11 @@ public final class BatteryUtils {
 		return "Battery percentage: " + BatteryUtils.getChargePercent(status.getCharge()) + "%, Charging: " + status.isCharging() + ", Time remaining: " + status.getTimeRemaining() + " seconds";
 	}
 
-	public static Identifier getBatteryIcon(BatteryStatus status) {
+	public static ResourceLocation getBatteryIcon(BatteryStatus status) {
 		return getBatteryIcon(status.getCharge(), status.isCharging());
 	}
 
-	public static Identifier getBatteryIcon(double charge, boolean charging) {
+	public static ResourceLocation getBatteryIcon(double charge, boolean charging) {
 		if (charging) {
 			if (isBetween(charge, 0, 0.25)) {
 				return Icons.BATTERY_0_CHARGING;

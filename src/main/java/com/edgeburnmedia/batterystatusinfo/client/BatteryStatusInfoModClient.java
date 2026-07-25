@@ -21,8 +21,8 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallba
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionResult;
 
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
 
@@ -59,7 +59,7 @@ public class BatteryStatusInfoModClient implements ClientModInitializer {
 		var configHolder = AutoConfig.register(BatteryStatusInfoConfig.class, GsonConfigSerializer::new);
 		configHolder.registerSaveListener((configHolder2, config) -> {
 			batteryCheckerThread.notifyConfigurationChanges();
-			return ActionResult.PASS;
+			return InteractionResult.PASS;
 		});
 		config = configHolder.getConfig();
 		batteryCheckerThread = new BatteryCheckerThread();
@@ -74,7 +74,7 @@ public class BatteryStatusInfoModClient implements ClientModInitializer {
 		// Register debug command
 		ClientCommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
 			dispatcher.register(ClientCommandManager.literal("bsidebug").executes(context -> {
-				context.getSource().sendFeedback(Text.of(BatteryUtils.getDebugInfo()));
+				context.getSource().sendFeedback(Component.nullToEmpty(BatteryUtils.getDebugInfo()));
 				return 0;
 			}));
 		});
