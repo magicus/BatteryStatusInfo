@@ -12,8 +12,8 @@ import net.minecraft.server.packs.resources.SimpleReloadInstance;
 @Mixin(SimpleReloadInstance.class)
 public class SimpleResourceReloadMixin {
 
-	@Inject(at = @At("RETURN"), method = "whenComplete")
-	public void whenComplete(CallbackInfoReturnable<CompletableFuture<?>> cir) {
+	@Inject(at = @At("RETURN"), method = "done")
+	public void done(CallbackInfoReturnable<CompletableFuture<?>> cir) {
 		if (cir.getReturnValue().isDone()) {
 			BatteryStatusInfoModClient.gameResourcesReady();
 		}
