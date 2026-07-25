@@ -8,20 +8,20 @@ import com.edgeburnmedia.batterystatusinfo.BatteryStatus;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastManager;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
 
 public class BatteryAlertToast implements Toast {
-    private static final ResourceLocation BACKGROUND_TEXTURE = ResourceLocation.fromNamespaceAndPath("minecraft", "toast/advancement");
+    private static final Identifier BACKGROUND_TEXTURE = Identifier.fromNamespaceAndPath("minecraft", "toast/advancement");
     private static final double DISPLAY_TIME = 3000;
     private static final int WHITE_COLOUR = CommonColors.WHITE;
     private static final int GRAY_COLOUR = CommonColors.LIGHT_GRAY;
-    private final ResourceLocation iconTexture;
+    private final Identifier iconTexture;
     private final BatteryStatus status;
     private double lowBatteryThreshold;
     private long startTime;
@@ -45,14 +45,14 @@ public class BatteryAlertToast implements Toast {
     }
 
     @Override
-    public void render(GuiGraphics context, Font textRenderer, long startTime) {
+    public void extractRenderState(GuiGraphicsExtractor context, Font textRenderer, long startTime) {
         context.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_TEXTURE, 0, 1, 160, 32);
 
         context.blit(RenderPipelines.GUI_TEXTURED, iconTexture, 4,5,0,0, 21,21, 21, 21);
         // 4 + 21 + 2 = x of icon texture + width of icon texture + buffer space
-        context.drawString(Minecraft.getInstance().font, getTitle(), 4+21+2,7, WHITE_COLOUR, false);
+        context.text(Minecraft.getInstance().font, getTitle(), 4+21+2,7, WHITE_COLOUR, false);
 
-        context.drawString(textRenderer, getSub(), 4+21+2, 7+textRenderer.lineHeight, GRAY_COLOUR, false);
+        context.text(textRenderer, getSub(), 4+21+2, 7+textRenderer.lineHeight, GRAY_COLOUR, false);
     }
 
     @Override
